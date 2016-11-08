@@ -118,6 +118,7 @@
     <Compile Include="Assets\_Imported Assets\Utility\WaypointCircuit.cs" />
     <Compile Include="Assets\_Imported Assets\Utility\WaypointProgressTracker.cs" />
     <Compile Include="Assets\_Scripts\GameController.cs" />
+    <Compile Include="Assets\_Scripts\MainMenuScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\_Imported Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />

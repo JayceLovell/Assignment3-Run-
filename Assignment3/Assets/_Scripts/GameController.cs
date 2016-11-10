@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
-//refernce to teh UI namespace
+//refernce to the UI namespace
 using UnityEngine.UI;
 /**
  * StudentID: 300833478
  * Date: 07/11/2016
- */ 
+ */
 public class GameController : MonoBehaviour {
     // Private Instance Variables
     private float _time;
@@ -29,7 +30,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    [Header("UI Objects")]
+    [Header("Menu")]
     public Text TimeLable;
     public Text MenuTitle;
     public Button BackToMainMenu;
@@ -50,6 +51,10 @@ public class GameController : MonoBehaviour {
         {
             this.TimeValue += Time.deltaTime; ;
         }
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            _bringUpMenu();
+        }
     }
     // Private METHODS*******************************
     private void _bringUpMenu()
@@ -58,11 +63,13 @@ public class GameController : MonoBehaviour {
         MenuTitle.gameObject.SetActive(true);
         BackToMainMenu.gameObject.SetActive(true);
         Resume.gameObject.SetActive(true);
+        Cursor.visible = true;
     }
     // Public METHODS*******************************
     public void BackToMainScreen()
     {
-
+        SceneManager.LoadScene("MainMenu");
+        Cursor.visible = true;
     }
     public void BringDownMenu()
     {

@@ -16,7 +16,25 @@ public class GameController : MonoBehaviour {
 
     // PUBLIC INSTANCE VARIABLES
     public AudioSource GamePlaySound;
-
+    public bool IsGamePause
+    {
+        get
+        {
+            return this._isGamePause;
+        }
+        set
+        {
+            this._isGamePause = value;
+            if(_isGamePause)
+            {
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.visible = false;
+            }
+        }
+    }
     public float TimeValue
     {
         get

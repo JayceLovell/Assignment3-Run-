@@ -120,6 +120,7 @@
     <Compile Include="Assets\_Scripts\BatteryController.cs" />
     <Compile Include="Assets\_Scripts\Clock_Controller.cs" />
     <Compile Include="Assets\_Scripts\GameController.cs" />
+    <Compile Include="Assets\_Scripts\GameWonController.cs" />
     <Compile Include="Assets\_Scripts\MainMenuScript.cs" />
     <Compile Include="Assets\_Scripts\Player_Won_Controller.cs" />
   </ItemGroup>

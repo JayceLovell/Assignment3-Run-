@@ -70,21 +70,9 @@ public class Clock_Controller : MonoBehaviour {
     }
     private void OnTriggerEnter(Collider other)
     {
-        int choice = Random.Range(1, 3);
-        Debug.Log(choice);
-        switch (choice)
-        {
-            case 1:
-                _gameController.TimeValue -= Random.Range(5, 10);
-                break;
-            case 2:
-                _player.transform.position = _spawnPoint.transform.position;
-                _player.transform.rotation = _spawnPoint.transform.rotation;
-                _gameController.SpookLaugh.Play();
-                break;
-            default:
-                break;
-        }
+        _player.transform.position = _spawnPoint.transform.position;
+        _player.transform.rotation = _spawnPoint.transform.rotation;
+        _gameController.SpookLaugh.Play();
         Destroy(gameObject);
     }
 }

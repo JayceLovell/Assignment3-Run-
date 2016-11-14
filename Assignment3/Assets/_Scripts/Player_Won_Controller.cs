@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 using System;
 
 public class Player_Won_Controller : MonoBehaviour {
@@ -24,13 +25,12 @@ public class Player_Won_Controller : MonoBehaviour {
         {
             if (hit.transform.gameObject.CompareTag("Car"))
             {
+                Debug.Log("testing Car" + hit.distance);
                 GameWon.gameObject.SetActive(true);
             }
         }
-        if (input.GetButtonDown("Fire1"))
-        {
-            //need a variable to hold the location of our Raycast Hit
-            RaycastHit hit;
+        if (Input.GetButtonDown("Fire1"))
+        { 
 
             // if raycast hits an object then do somthing....
             if(Physics.Raycast (this.PlayerDirection.position,this.PlayerDirection.forward, out hit))

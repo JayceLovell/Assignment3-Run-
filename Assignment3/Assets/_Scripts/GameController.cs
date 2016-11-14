@@ -15,9 +15,9 @@ public class GameController : MonoBehaviour {
     private bool _isGamePause;
     private float _fillAmount;
     private bool _isLightOn;
-    private int interval = 1;
-    private float _nextTime = 0;
     private float _lightpausevalue;
+    private float timeBetweenFires = 1.0f;
+    private float timeTilNextFire = 0.0f;
 
     // PUBLIC INSTANCE VARIABLES
     public AudioSource GamePlaySound;
@@ -38,10 +38,11 @@ public class GameController : MonoBehaviour {
             {
                 IsGamePause = true;
                 GameOverLable.gameObject.SetActive(true);
-                BackToMainMenu.gameObject.SetActive(true);
                 GamePlaySound.Stop();
                 OutOfBattery.Play();
                 Cursor.visible = true;
+                PlayerPrefs.Save();
+                Invoke("BackToMainScreen", 5);
             }
         }
     }
@@ -121,6 +122,7 @@ public class GameController : MonoBehaviour {
         {
             this.TimeValue += Time.deltaTime;
             UpdateBattery();
+            timeTilNextFire -= Time.deltaTime;
         }
         if(Input.GetKeyDown(KeyCode.Escape)&&!IsGameOver)
         {
@@ -140,6 +142,8 @@ public class GameController : MonoBehaviour {
                 this._isLightOn = true;
             }
         }
+        //Saves score to memory
+        PlayerPrefs.SetFloat("Score", TimeValue);
     }
     // Private METHODS*******************************
     private void _bringUpMenu()
@@ -152,14 +156,13 @@ public class GameController : MonoBehaviour {
     }
     private void UpdateBattery()
     {
-        if (Time.time >= _nextTime)
+        if (timeTilNextFire < 0)
         {
             if (_isLightOn && !_isGameOver)
             {
                 FillAmount -= 0.05f;
+                timeTilNextFire = timeBetweenFires;
             }
-
-            _nextTime += interval;
         }
         BatteryBar.fillAmount = _fillAmount;
     }

@@ -9,8 +9,6 @@ public class BatteryController : MonoBehaviour
     private GameObject _gameControllerObject;
     private GameController _gameController;
 
-    public AudioSource BatteryPickUP;
-
     // Use this for initialization
     void Start()
     {
@@ -31,7 +29,6 @@ public class BatteryController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Destroy(gameObject);
-        BatteryPickUP.Play();
         _gameController.FillAmount = 1f;
     }
 }

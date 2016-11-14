@@ -17,10 +17,12 @@ public class GameController : MonoBehaviour {
     private bool _isLightOn;
     private int interval = 1;
     private float _nextTime = 0;
+    private float _lightpausevalue;
 
     // PUBLIC INSTANCE VARIABLES
     public AudioSource GamePlaySound;
     public AudioSource OutOfBattery;
+    public AudioSource SpookLaugh;
     public Image BatteryBar;
     public Light Light;
     public bool IsGameOver
@@ -34,11 +36,12 @@ public class GameController : MonoBehaviour {
             this._isGameOver = value;
             if(_isGameOver)
             {
-                _isGamePause = true;
+                IsGamePause = true;
                 GameOverLable.gameObject.SetActive(true);
                 BackToMainMenu.gameObject.SetActive(true);
                 GamePlaySound.Stop();
                 OutOfBattery.Play();
+                Cursor.visible = true;
             }
         }
     }
@@ -85,6 +88,8 @@ public class GameController : MonoBehaviour {
             if (_fillAmount <= 0f)
             {
                 IsGameOver = true;
+                IsGamePause = true;
+                Cursor.visible = true;
             }
         }
     }
@@ -104,34 +109,50 @@ public class GameController : MonoBehaviour {
         BackToMainMenu.gameObject.SetActive(false);
         Resume.gameObject.SetActive(false);
         GameOverLable.gameObject.SetActive(false);
-        _isGamePause = false;
-        _isLightOn = true;
-        FillAmount = 1f;
+        this.IsGamePause = false;
+        this.IsGameOver = false;
+        this._isLightOn = true;
+        this.FillAmount = 1f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (!_isGamePause)
+        if (!IsGamePause)
         {
-            this.TimeValue += Time.deltaTime; ;
+            this.TimeValue += Time.deltaTime;
+            UpdateBattery();
         }
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape)&&!IsGameOver)
         {
             _bringUpMenu();
+            _lightpausevalue = FillAmount;
         }
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire2"))
         {
-            if (_isLightOn)
+            if (this._isLightOn)
             {
                 Light.intensity = 0;
-                _isLightOn = false;
+                this._isLightOn = false;
             }
             else
             {
                 Light.intensity = 4;
+                this._isLightOn = true;
             }
         }
-        if(Time.time >= _nextTime)
+    }
+    // Private METHODS*******************************
+    private void _bringUpMenu()
+    {
+        IsGamePause = true;
+        MenuTitle.gameObject.SetActive(true);
+        BackToMainMenu.gameObject.SetActive(true);
+        Resume.gameObject.SetActive(true);
+        Cursor.visible = true;
+    }
+    private void UpdateBattery()
+    {
+        if (Time.time >= _nextTime)
         {
             if (_isLightOn && !_isGameOver)
             {
@@ -140,19 +161,6 @@ public class GameController : MonoBehaviour {
 
             _nextTime += interval;
         }
-        UpdateBattery();
-    }
-    // Private METHODS*******************************
-    private void _bringUpMenu()
-    {
-        _isGamePause = true;
-        MenuTitle.gameObject.SetActive(true);
-        BackToMainMenu.gameObject.SetActive(true);
-        Resume.gameObject.SetActive(true);
-        Cursor.visible = true;
-    }
-    private void UpdateBattery()
-    {
         BatteryBar.fillAmount = _fillAmount;
     }
     // Public METHODS*******************************
@@ -163,9 +171,10 @@ public class GameController : MonoBehaviour {
     }
     public void BringDownMenu()
     {
-        _isGamePause = false;
+        IsGamePause = false;
         MenuTitle.gameObject.SetActive(false);
         BackToMainMenu.gameObject.SetActive(false);
         Resume.gameObject.SetActive(false);
+        BatteryBar.fillAmount = _lightpausevalue;
     }
 }

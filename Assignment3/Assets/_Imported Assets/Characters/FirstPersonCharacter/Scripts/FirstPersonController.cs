@@ -42,8 +42,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
-        //my edits
-        private GameObject _gameControllerObject;
+        //********************my edits***********
+        //PRIVATE INSTANCE VARIABLES
+        private GameObject _gameController;
+        //PUBLIC INSTANCE VARIABLES
+        [Header("My Edits")]
         public GameController MainGameController;
 
         // Use this for initialization

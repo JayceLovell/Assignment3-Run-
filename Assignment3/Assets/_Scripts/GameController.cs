@@ -13,9 +13,35 @@ public class GameController : MonoBehaviour {
     private float _time;
     private bool _isGameOver;
     private bool _isGamePause;
+    private float _fillAmount;
+    private bool _isLightOn;
+    private int interval = 1;
+    private float _nextTime = 0;
 
     // PUBLIC INSTANCE VARIABLES
     public AudioSource GamePlaySound;
+    public AudioSource OutOfBattery;
+    public Image BatteryBar;
+    public Light Light;
+    public bool IsGameOver
+    {
+        get
+        {
+            return this._isGameOver;
+        }
+        set
+        {
+            this._isGameOver = value;
+            if(_isGameOver)
+            {
+                _isGamePause = true;
+                GameOverLable.gameObject.SetActive(true);
+                BackToMainMenu.gameObject.SetActive(true);
+                GamePlaySound.Stop();
+                OutOfBattery.Play();
+            }
+        }
+    }
     public bool IsGamePause
     {
         get
@@ -47,12 +73,29 @@ public class GameController : MonoBehaviour {
                 this.TimeLable.text = Mathf.Round(this._time).ToString();
         }
     }
+    public float FillAmount
+    {
+        get
+        {
+            return this._fillAmount;
+        }
+        set
+        {
+            this._fillAmount = value;
+            if (_fillAmount <= 0f)
+            {
+                IsGameOver = true;
+            }
+        }
+    }
 
     [Header("Menu")]
     public Text TimeLable;
     public Text MenuTitle;
     public Button BackToMainMenu;
     public Button Resume;
+    [Header("GameOver")]
+    public Text GameOverLable;
 
 	// Use this for initialization
 	void Start () {
@@ -60,7 +103,10 @@ public class GameController : MonoBehaviour {
         MenuTitle.gameObject.SetActive(false);
         BackToMainMenu.gameObject.SetActive(false);
         Resume.gameObject.SetActive(false);
+        GameOverLable.gameObject.SetActive(false);
         _isGamePause = false;
+        _isLightOn = true;
+        FillAmount = 1f;
 	}
 	
 	// Update is called once per frame
@@ -73,6 +119,28 @@ public class GameController : MonoBehaviour {
         {
             _bringUpMenu();
         }
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (_isLightOn)
+            {
+                Light.intensity = 0;
+                _isLightOn = false;
+            }
+            else
+            {
+                Light.intensity = 4;
+            }
+        }
+        if(Time.time >= _nextTime)
+        {
+            if (_isLightOn && !_isGameOver)
+            {
+                FillAmount -= 0.05f;
+            }
+
+            _nextTime += interval;
+        }
+        UpdateBattery();
     }
     // Private METHODS*******************************
     private void _bringUpMenu()
@@ -82,6 +150,10 @@ public class GameController : MonoBehaviour {
         BackToMainMenu.gameObject.SetActive(true);
         Resume.gameObject.SetActive(true);
         Cursor.visible = true;
+    }
+    private void UpdateBattery()
+    {
+        BatteryBar.fillAmount = _fillAmount;
     }
     // Public METHODS*******************************
     public void BackToMainScreen()

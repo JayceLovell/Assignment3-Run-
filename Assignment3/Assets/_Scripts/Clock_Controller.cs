@@ -4,7 +4,9 @@ using System.Collections;
 public class Clock_Controller : MonoBehaviour {
 
     private GameObject _gameControllerObject;
-    public GameController _gameController;
+    private GameController _gameController;
+    private GameObject _spawnPoint;
+    private GameObject _player;
     private bool _goingup;
     private float _speed;
     private Transform _transform;
@@ -29,6 +31,10 @@ public class Clock_Controller : MonoBehaviour {
         _goingup = true;
         this._transform = this.GetComponent<Transform>();
         this._speed = 0.01f;
+        this._gameControllerObject = GameObject.Find("Game Controller");
+        this._gameController = this._gameControllerObject.GetComponent<GameController> () as GameController;
+        this._player = GameObject.Find("Player");
+        this._spawnPoint = GameObject.Find("SpawnPoint");
     }
 
     // Update is called once per frame
@@ -63,7 +69,18 @@ public class Clock_Controller : MonoBehaviour {
     }
     private void OnTriggerEnter(Collider other)
     {
-        _gameController.TimeValue -= Random.Range(1, 5);
+        switch (Random.Range(1, 2))
+        {
+            case 1:
+                _gameController.TimeValue -= Random.Range(5, 10);
+                break;
+            case 2:
+                _player.transform.position = _spawnPoint.transform.position;
+                _player.transform.rotation = _spawnPoint.transform.rotation;
+                break;
+            default:
+                break;
+        }
         Destroy(gameObject);
     }
 }

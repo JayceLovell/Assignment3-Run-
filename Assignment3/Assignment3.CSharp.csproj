@@ -117,6 +117,7 @@
     <Compile Include="Assets\_Imported Assets\Utility\TimedObjectDestructor.cs" />
     <Compile Include="Assets\_Imported Assets\Utility\WaypointCircuit.cs" />
     <Compile Include="Assets\_Imported Assets\Utility\WaypointProgressTracker.cs" />
+    <Compile Include="Assets\_Scripts\BatteryController.cs" />
     <Compile Include="Assets\_Scripts\Clock_Controller.cs" />
     <Compile Include="Assets\_Scripts\GameController.cs" />
     <Compile Include="Assets\_Scripts\MainMenuScript.cs" />
